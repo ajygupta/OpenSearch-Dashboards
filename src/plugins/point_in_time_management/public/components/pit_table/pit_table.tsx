@@ -192,7 +192,7 @@ const PITTable = (props: RouteComponentProps) => {
         dataSourceId = dataSource[0].id;
       }
     }
-    setMessage(<EmptyState />);
+    setMessage(<EmptyState history={history}/>);
     console.log(dataSourceId);
 
     services
