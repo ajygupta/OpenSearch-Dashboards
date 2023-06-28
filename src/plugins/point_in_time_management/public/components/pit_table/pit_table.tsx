@@ -192,7 +192,7 @@ const PITTable = (props: RouteComponentProps) => {
         dataSourceId = dataSource[0].id;
       }
     }
-    setMessage(<EmptyState history={history}/>);
+    setMessage(<EmptyState history={history} />);
     console.log(dataSourceId);
 
     services
@@ -282,7 +282,7 @@ const PITTable = (props: RouteComponentProps) => {
                       keep_alive: x.attributes.keepAlive,
                       dataSource: dataSourceName,
                       isSavedObject: true,
-                      expiry: x.attributes.creation_time + x.attributes.keepAlive,
+                      expiry: moment().subtract(2, 'days'), // hard coding in case backend pit gets deleted
                     }))
                   )
               );
@@ -520,10 +520,20 @@ const PITTable = (props: RouteComponentProps) => {
             <EuiFormRow>
               <EuiFlexGroup>
                 <EuiFlexItem>
-                  <EuiFieldNumber placeholder="Hour(s)" onChange={onChangeTimeHr} />
+                  <EuiFieldNumber
+                    min={0}
+                    max={23}
+                    placeholder="Hour(s)"
+                    onChange={onChangeTimeHr}
+                  />
                 </EuiFlexItem>
                 <EuiFlexItem>
-                  <EuiFieldNumber placeholder="Min(s)" onChange={onChangeTimeMin} />
+                  <EuiFieldNumber
+                    min={0}
+                    max={59}
+                    placeholder="Min(s)"
+                    onChange={onChangeTimeMin}
+                  />
                 </EuiFlexItem>
               </EuiFlexGroup>
             </EuiFormRow>
@@ -668,6 +678,12 @@ const PITTable = (props: RouteComponentProps) => {
       }
     }
 
+    selectedPits.forEach((x) => {
+      if (x.isSavedObject) {
+        deletePointInTimeById(savedObjects.client, x.id);
+      }
+    });
+
     services
       .deletePits(
         selectedPits.map((x) => x.pit_id),
@@ -677,12 +693,6 @@ const PITTable = (props: RouteComponentProps) => {
         console.log(deletedPits);
         getPits(dataSource);
       });
-
-    selectedPits.forEach((x) => {
-      if (x.isSavedObject) {
-        deletePointInTimeById(savedObjects.client, x.id);
-      }
-    });
   };
 
   const renderToolsRight = () => {

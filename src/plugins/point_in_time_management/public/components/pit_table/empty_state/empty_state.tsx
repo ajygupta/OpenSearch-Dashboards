@@ -14,7 +14,6 @@ interface Props {
 }
 
 export const EmptyState = ({ history }: Props) => {
-  console.log('history in empty state', history);
   const createButton = (
     <CreateButton history={history} isEmptyState={true} dataTestSubj="createPitButton" />
   );

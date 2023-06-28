@@ -24,7 +24,6 @@ import {
 } from '@elastic/eui';
 import { i18n } from '@osd/i18n';
 import { PointInTimeAttributes, ToastMessageItem } from '../../types';
-import { findById } from '../utils';
 
 export interface EditPitProps {
   existingPointInTime: PointInTimeAttributes;
@@ -198,7 +197,7 @@ export class EditPitForm extends React.Component<EditPitProps, EditPitState> {
   };
 
   onChangePitName = (e: { target: { value: any } }) => {
-    this.setState({ name: e.target.value });
+    this.setState({ ...this.state, name: e.target.value });
     console.log(e.target.value);
   };
 
@@ -263,7 +262,11 @@ export class EditPitForm extends React.Component<EditPitProps, EditPitState> {
             label="PIT name"
             helpText="Specify a unique and descriptive name that is easy to recognize."
           >
-            <EuiFieldText name="pit-name" value={this.props.existingPointInTime.name} onChange={this.onChangePitName} />
+            <EuiFieldText
+              name="pit-name"
+              defaultValue={this.props.existingPointInTime.name}
+              onChange={this.onChangePitName}
+            />
           </EuiFormRow>
         </EuiDescribedFormGroup>
         <EuiDescribedFormGroup
@@ -323,7 +326,11 @@ export class EditPitForm extends React.Component<EditPitProps, EditPitState> {
                   label="Point in time name"
                   helpText="Specify a unique and descriptive name that is easy to recognize."
                 >
-                  <EuiFieldText placeholder="Descriptive name" value={this.state.name} onChange={this.onChangePitName} />
+                  <EuiFieldText
+                    placeholder="Descriptive name"
+                    defaultValue={this.state.name}
+                    onChange={this.onChangePitName}
+                  />
                 </EuiFormRow>
               </EuiFlexItem>
             </EuiFlexGroup>
@@ -391,10 +398,22 @@ export class EditPitForm extends React.Component<EditPitProps, EditPitState> {
               <EuiFormRow>
                 <EuiFlexGroup>
                   <EuiFlexItem>
-                    <EuiFieldNumber value={this.state.AddTimeHr} min={0} max={23} placeholder="Hour(s)" onChange={this.onChangeTimeHr} />
+                    <EuiFieldNumber
+                      value={this.state.AddTimeHr}
+                      min={0}
+                      max={23}
+                      placeholder="Hour(s)"
+                      onChange={this.onChangeTimeHr}
+                    />
                   </EuiFlexItem>
                   <EuiFlexItem>
-                    <EuiFieldNumber value={this.state.AddTimeMin} min={0} max={59} placeholder="Min(s)" onChange={this.onChangeTimeMin} />
+                    <EuiFieldNumber
+                      value={this.state.AddTimeMin}
+                      min={0}
+                      max={59}
+                      placeholder="Min(s)"
+                      onChange={this.onChangeTimeMin}
+                    />
                   </EuiFlexItem>
                 </EuiFlexGroup>
               </EuiFormRow>

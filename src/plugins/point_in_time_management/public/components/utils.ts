@@ -56,7 +56,7 @@ export async function getIndexPatterns(savedObjectsClient: SavedObjectsClientCon
     savedObjectsClient
       .find({
         type: 'index-pattern',
-        fields: ['title', 'type'],
+        // fields: ['title', 'type'],
         perPage: 10000,
       })
       .then((response) =>
@@ -64,10 +64,12 @@ export async function getIndexPatterns(savedObjectsClient: SavedObjectsClientCon
           .map((pattern) => {
             const id = pattern.id;
             const title = pattern.get('title');
-
+            const dataSources = pattern.references.filter((x) => x.type == 'data-source');
+            const dataSource = dataSources.length > 0 ? dataSources[0].id : undefined;
             return {
               id,
               title,
+              dataSource,
               // the prepending of 0 at the default pattern takes care of prioritization
               // so the sorting will but the default index on top
               // or on bottom of a the table
@@ -330,7 +332,7 @@ export async function createPitSavedObjectWithIndexPatttern(
   const index = indices.join(',');
   const gettedIndexPatterns = await getIndexPatterns(client);
   console.log('fetched index patterns', gettedIndexPatterns);
-  const dsIndexPatterns = gettedIndexPatterns.filter((x) => x.datasource == dataSourceId);
+  const dsIndexPatterns = gettedIndexPatterns.filter((x) => x.dataSource == dataSourceId);
   indexPatternObj = dsIndexPatterns.find((x) => x.title == index);
   if (!indexPatternObj) {
     const ds = {

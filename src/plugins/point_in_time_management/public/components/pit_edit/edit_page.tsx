@@ -11,14 +11,7 @@ import { useOpenSearchDashboards } from '../../../../opensearch_dashboards_react
 import { PointInTimeAttributes, PointInTimeManagementContext } from '../../types';
 import { getEditBreadcrumbs } from '../breadcrumbs';
 import { EditPitForm } from './edit_pit_form';
-import {
-  createPit,
-  createPitSavedObjectWithIndexPatttern,
-  findById,
-  findPointInTimeSavedObject,
-  updatePointInTimeById,
-  updatePointInTimeKeepAlive,
-} from '../utils';
+import { createPitSavedObjectWithIndexPatttern, findById, updatePointInTimeById } from '../utils';
 import { ToastMessageItem } from '../../../../data_source_management/public/types';
 import { getServices, Services } from '../../services';
 
